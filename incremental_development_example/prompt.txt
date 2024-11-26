@@ -1,0 +1,14 @@
+Given the following Umple state machine:
+
+"class M {
+ Boolean x = false;
+ sm {
+   Test-Suite:[AG sm.state = s1 & x == false & sm.event == e -> AX sm.state = s2]
+   s1 { e[x==false] ->/{x = true;} s2; }
+   s2 { f[x==true] -> s3;}
+   s3 { g[x==true] ->/{x = true;} s4;}
+   s4 { g ->/{x = true;} s1;}
+ }
+}"
+
+Generate NuSMV code.
