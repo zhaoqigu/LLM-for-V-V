@@ -1,0 +1,78 @@
+Given the following Umple state machine:
+
+"class M {
+ Boolean x = false;
+ sm {
+   Test-Suite:[AG sm.state = s1 & x == false & sm.event == e -> AX sm.state = s2]
+   s1 { e[x==false] ->/{x = true;} s2; }
+   s2 { f[x==true] -> s3;}
+   s3 { g[x==true] ->/{x = true;} s1;}
+ }
+}"
+
+
+Generate NuSMV specification like:
+"-- This defines a NuSMV module for M --
+MODULE M
+
+   -- This part declares state variables for the given NuSMV module --
+   VAR
+     state : { Sm_s1 , Sm_s2 , Sm_s3 };
+     event : { ev_e , ev_f , ev_g , ev_null };
+     x : boolean;
+
+   -- This part defines macros that summarize the transitions and guards (if any) of the given NuSMV module --
+   DEFINE
+     sm_stable := !( event = ev_e | event = ev_f | event = ev_g );
+     t1 := event = ev_e & state = Sm_s1 & g1;
+     t2 := event = ev_f & state = Sm_s2 & g2;
+     t3 := event = ev_g & state = Sm_s3 & g2;
+     g1 := x = FALSE;
+     g2 := x = TRUE;
+
+   -- This part defines logic for the assignment of values to state variable "state" of this NuSMV module --
+   ASSIGN
+     init( state ) := Sm_s1;
+     next( state ) := case
+       t3 : Sm_s1;         -- If event g happens in s3, transition back to s1
+       t2 : Sm_s3;         -- If event f happens in s2, transition to s3
+       t1 : Sm_s2;         -- If event e happens in s1, transition to s2
+       TRUE : state;       -- Stay in the same state otherwise
+     esac;
+
+   -- This part defines logic for the assignment of values to state variable "event" of this NuSMV module --
+   ASSIGN
+     init( event ) := ev_null;
+     next( event ) := case
+       sm_stable : { ev_e , ev_f , ev_g };  -- Stable state, can choose any of the events e, f, or g
+       TRUE : ev_null;                       -- Otherwise, no event
+     esac;
+
+   -- This part defines logic for the assignment of values to state variable "x" of this NuSMV module --
+   ASSIGN
+     init( x ) := FALSE;
+     next( x ) := case
+       t1 : x = TRUE;  -- Transition in state s1 with event e makes x true
+       t3 : x = TRUE;  -- Transition in state s3 with event g makes x true
+       TRUE : x;       -- Otherwise, x remains the same
+     esac;
+
+-- This defines a NuSMV module for M_Machine --
+MODULE M_Machine
+
+   -- This part declares state variables for the given NuSMV module --
+   VAR
+     m : M;
+
+-- This defines a NuSMV module for main --
+MODULE main
+
+   -- This part declares state variables for the given NuSMV module --
+   VAR
+     m_Machine : M_Machine;
+
+   -- The following properties are specified to certify that non-symbolic state(s) of this model is (or are) reachable. 
+   CTLSPEC   EF( m_Machine.m.state = Sm_s1 )
+   CTLSPEC   EF( m_Machine.m.state = Sm_s2 )
+   CTLSPEC   EF( m_Machine.m.state = Sm_s3 )
+"
