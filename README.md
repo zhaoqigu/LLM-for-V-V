@@ -9,7 +9,7 @@ Objectives
 
 Bridge Syntax Gap: Automate the transformation of Umple models into NuSMV code.
 
-Leverage Few-Shot Learning: Utilize ChatGPT’s ability to generalize patterns and generate reliable outputs using example-based learning.
+Leverage Few-Shot Learning: Utilize ChatGPT’s capability to generalize patterns and generate equivelent outputs using example-based learning.
 
 Efficiency: Reduce manual translation effort and ensure correctness in mapping rules.
 
