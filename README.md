@@ -3,7 +3,7 @@ Artificts for paper "LLMs for Formal Verification & Validation".
 
 # ------------------------------------
 
-This repository provide examples of a structured process to train ChatGPT using a few-shot method, enabling it to reliably generate NuSMV code from Umple models. By providing carefully crafted training templates, ChatGPT learns to map Umple syntax to NuSMV code format, allowing consistent code generation for new models.
+This repository provide examples of a structured process to train ChatGPT using a few-shot method, enabling it to reliably generate NuSMV code from Umple models. By providing training templates, ChatGPT learns to map Umple syntax to NuSMV code format, allowing consistent code generation for new models.
 
 Objectives
 Bridge Syntax Gap: Automate the transformation of Umple models into NuSMV code.
