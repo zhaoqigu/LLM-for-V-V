@@ -1,79 +1,70 @@
-// This file is generated from the provided Umple model
+-- This file is generated from model.ump --
 
 -- PLEASE DO NOT EDIT THIS CODE --
--- This code is auto-generated using the UMPLE modeling language --
+-- This code was generated using the UMPLE modeling language! --
 
--- NuSMV module for LoanState --
-MODULE LoanState
+-- This defines a NuSMV module for Intersection_timerDriven_noPedestrianFlow --
+MODULE Intersection_timerDriven_noPedestrianFlow
 
-  -- Declaring state variables for LoanState
-  VAR
-    state : { State_Initial, State_Outstanding, State_Recalled, State_Overdue, State_Returned, State_Lost };
-    event : { ev_extend, ev_returnitem, ev_recall, ev_deadline, ev_declareLost, ev_null };
-    deadline : integer;
-    loanStartTime : integer;
+   -- This part declares state variables for the given NuSMV module --
+   VAR
+     state : { Flow_FourWayStop, Flow_DirectionOneGo, Flow_DirectionOneHalting, Flow_DirectionTwoGo, Flow_DirectionTwoHalting };
+     event : { ev_initiateRegularOperation, ev_Wait_DirectionOneGo, ev_detectMalfunction_DirectionOneGo, ev_WaitDirectionOneHalting, ev_detectMalfunction_DirectionOneaHalting, ev_WaitDirectionTwoGo, ev_detectMalfunction_DirectionTwoGo, ev_Wait_DirectionTwoGo, ev_detectMalfunction_DirectionTwoHalting, ev_null };
 
-  -- Define macros for transitions and conditions
-  DEFINE
-    state_stable := !(event = ev_extend | event = ev_returnitem | event = ev_recall | event = ev_deadline | event = ev_declareLost);
-    t1 := event = ev_null & state = State_Initial;
-    t2 := event = ev_extend & state = State_Outstanding;
-    t3 := event = ev_returnitem & state = State_Outstanding;
-    t4 := event = ev_recall & state = State_Outstanding;
-    t5 := event = ev_deadline & state = State_Outstanding;
-    t6 := event = ev_declareLost & state = State_Outstanding;
-    t7 := event = ev_returnitem & state = State_Recalled;
-    t8 := event = ev_deadline & state = State_Recalled;
-    t9 := event = ev_declareLost & state = State_Recalled;
-    t10 := event = ev_returnitem & state = State_Overdue;
-    t11 := event = ev_declareLost & state = State_Overdue;
-    t12 := event = ev_returnitem & state = State_Lost;
+   -- This part defines macros that summarize the transitions and guards (if any) of the given NuSMV module --
+   DEFINE
+     flow_stable := !( event = ev_initiateRegularOperation | event = ev_Wait_DirectionOneGo | event = ev_detectMalfunction_DirectionOneGo | event = ev_WaitDirectionOneHalting | event = ev_detectMalfunction_DirectionOneaHalting | event = ev_WaitDirectionTwoGo | event = ev_detectMalfunction_DirectionTwoGo | event = ev_Wait_DirectionTwoGo | event = ev_detectMalfunction_DirectionTwoHalting );
+     t1 := event = ev_initiateRegularOperation & state = Flow_FourWayStop;
+     t2 := event = ev_Wait_DirectionOneGo & state = Flow_DirectionOneGo;
+     t3 := event = ev_detectMalfunction_DirectionOneGo & state = Flow_DirectionOneGo;
+     t4 := event = ev_WaitDirectionOneHalting & state = Flow_DirectionOneHalting;
+     t5 := event = ev_detectMalfunction_DirectionOneaHalting & state = Flow_DirectionOneHalting;
+     t6 := event = ev_WaitDirectionTwoGo & state = Flow_DirectionTwoGo;
+     t7 := event = ev_detectMalfunction_DirectionTwoGo & state = Flow_DirectionTwoGo;
+     t8 := event = ev_Wait_DirectionTwoGo & state = Flow_DirectionTwoHalting;
+     t9 := event = ev_detectMalfunction_DirectionTwoHalting & state = Flow_DirectionTwoHalting;
 
-  -- Logic for state transitions
-  ASSIGN
-    init(state) := State_Initial;
-    next(state) := case
-      t1 : State_Outstanding;
-      t2 : State_Outstanding;
-      t3 : State_Returned;
-      t4 : State_Recalled;
-      t5 : State_Overdue;
-      t6 : State_Lost;
-      t7 : State_Returned;
-      t8 : State_Overdue;
-      t9 : State_Lost;
-      t10 : State_Returned;
-      t11 : State_Lost;
-      t12 : State_Returned;
-      TRUE : state;
-    esac;
+   -- This part defines logic for the assignment of values to state variable "state" of this NuSMV module --
+   ASSIGN
+     init( state ) := Flow_FourWayStop;
+     next( state ) := case
+       t1 : Flow_DirectionOneGo;
+       t2 : Flow_DirectionOneHalting;
+       t3 : Flow_FourWayStop;
+       t4 : Flow_DirectionTwoGo;
+       t5 : Flow_FourWayStop;
+       t6 : Flow_DirectionTwoHalting;
+       t7 : Flow_FourWayStop;
+       t8 : Flow_DirectionOneGo;
+       t9 : Flow_FourWayStop;
+       TRUE : state;
+     esac;
 
-  -- Logic for event transitions
-  ASSIGN
-    init(event) := ev_null;
-    next(event) := case
-      state_stable : { ev_extend, ev_returnitem, ev_recall, ev_deadline, ev_declareLost };
-      TRUE : ev_null;
-    esac;
+   -- This part defines logic for the assignment of values to state variable "event" of this NuSMV module --
+   ASSIGN
+     init( event ) := ev_null;
+     next( event ) := case
+       flow_stable : { ev_initiateRegularOperation, ev_Wait_DirectionOneGo, ev_detectMalfunction_DirectionOneGo, ev_WaitDirectionOneHalting, ev_detectMalfunction_DirectionOneaHalting, ev_WaitDirectionTwoGo, ev_detectMalfunction_DirectionTwoGo, ev_Wait_DirectionTwoGo, ev_detectMalfunction_DirectionTwoHalting };
+       TRUE : ev_null;
+     esac;
 
--- NuSMV module for LoanState_Machine --
-MODULE LoanState_Machine
+-- This defines a NuSMV module for Intersection_timerDriven_noPedestrianFlow_Machine --
+MODULE Intersection_timerDriven_noPedestrianFlow_Machine
 
-  -- State variables for the LoanState_Machine
-  VAR
-    loanState : LoanState;
+   -- This part declares state variables for the given NuSMV module --
+   VAR
+     intersection_timerDriven_noPedestrianFlow : Intersection_timerDriven_noPedestrianFlow;
 
--- NuSMV module for main --
+-- This defines a NuSMV module for main --
 MODULE main
 
-  -- State variables for main
-  VAR
-    loanState_Machine : LoanState_Machine;
+   -- This part declares state variables for the given NuSMV module --
+   VAR
+     intersection_timerDriven_noPedestrianFlow_Machine : Intersection_timerDriven_noPedestrianFlow_Machine;
 
-  -- Reachability properties for each state
-  CTLSPEC EF (loanState_Machine.loanState.state = State_Initial)
-  CTLSPEC EF (loanState_Machine.loanState.state = State_Outstanding)
-  CTLSPEC EF (loanState_Machine.loanState.state = State_Recalled)
-  CTLSPEC EF (loanState_Machine.loanState.state = State_Overdue)
-  CTLSPEC EF (loanState_Machine.loanState.state = State_Returned)
-  CTLSPEC EF (loanState_Machine.loanState.state = State_Lost)
+   -- The following properties are specified to certify that non-symbolic state(s) of this model is (or are) reachable. 
+   CTLSPEC   EF( intersection_timerDriven_noPedestrianFlow_Machine.intersection_timerDriven_noPedestrianFlow.state = Flow_FourWayStop )
+   CTLSPEC   EF( intersection_timerDriven_noPedestrianFlow_Machine.intersection_timerDriven_noPedestrianFlow.state = Flow_DirectionOneGo )
+   CTLSPEC   EF( intersection_timerDriven_noPedestrianFlow_Machine.intersection_timerDriven_noPedestrianFlow.state = Flow_DirectionOneHalting )
+   CTLSPEC   EF( intersection_timerDriven_noPedestrianFlow_Machine.intersection_timerDriven_noPedestrianFlow.state = Flow_DirectionTwoGo )
+   CTLSPEC   EF( intersection_timerDriven_noPedestrianFlow_Machine.intersection_timerDriven_noPedestrianFlow.state = Flow_DirectionTwoHalting )
