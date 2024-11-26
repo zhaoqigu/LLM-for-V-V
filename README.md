@@ -3,24 +3,23 @@ Artificts for paper "LLMs for Formal Verification & Validation".
 
 # ------------------------------------
 
-This repository provide examples of a structured process to train ChatGPT using a few-shot method, enabling it to reliably generate NuSMV code from Umple models. By providing training templates, ChatGPT learns to map Umple syntax to NuSMV code format, allowing consistent code generation for new models.
+few_shot_example foler provide examples of a structured process to train ChatGPT using a few-shot method, enabling it to reliably generate NuSMV code from Umple models. By providing training templates, ChatGPT learns to map Umple syntax to NuSMV code format, allowing consistent code generation for new models.
 
-Objectives
+Related Experinment
 
-Bridge Syntax Gap: Automate the transformation of Umple models into NuSMV code.
+prompt.txt -- provided to chatgpt as prompt.
 
-Leverage Few-Shot Learning: Utilize ChatGPT’s capability to generalize patterns and generate equivelent outputs using example-based learning.
+training_data.json -- file contains examples which are mapping of source model (Umple) to target model (SMV: input language to NuSMV2).
 
-Efficiency: Reduce manual translation effort and ensure correctness in mapping rules.
+respond.txt -- chatgpt generated SMV model.
 
 # ------------------------------------
 
 This repository also showcases a process for incremental development using ChatGPT to iteratively generate more advanced NuSMV code. By leveraging previously generated NuSMV results as additional few-shot templates, users can incrementally define new behaviors and progressively refine their system.
 
-Objectives
+prompt.txt -- provided to chatgpt as prompt.
 
-Iterative Refinement: Enable step-by-step enhancement of NuSMV code based on incremental requirements.
+training_data.txt -- contains mapping of source (original Umple model) to target model (previously generated SMV code).
 
-Leverage Prior Outputs: Use ChatGPT’s adaptability to incorporate earlier NuSMV results as templates for subsequent refinements.
+output.txt -- chatgpt generated SMV model with incrementally added new behaviors and constrains correctly.
 
-Automate Behavior Extension: Simplify the process of adding new behaviors or constraints to an existing Umple modle for NuSMV code generation.
